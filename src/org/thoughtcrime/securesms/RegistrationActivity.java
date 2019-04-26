@@ -442,7 +442,8 @@ public class RegistrationActivity extends BaseActionBarActivity implements Verif
     if (gcmStatus == PlayServicesStatus.SUCCESS) {
       handleRequestVerification(e164number, true);
     } else if (gcmStatus == PlayServicesStatus.MISSING) {
-      handlePromptForNoPlayServices(e164number);
+//      handlePromptForNoPlayServices(e164number);
+      handleRequestVerification(e164number, false);
     } else if (gcmStatus == PlayServicesStatus.NEEDS_UPDATE) {
       GoogleApiAvailability.getInstance().getErrorDialog(this, ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED, 0).show();
     } else {
