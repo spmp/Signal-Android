@@ -2,8 +2,6 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-# Build etc. if BUILD_SIGNAL defined
-ifdef BUILD_SIGNAL
 $(info Building Signal)
 LOCAL_MODULE_TAGS := optional
 
