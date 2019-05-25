@@ -32,7 +32,7 @@ endif
 # Build defines
 MY_JAVA_OPTIONS := "-Xmx40960m -Djava.security.debug=sunpkcs11"
 
-MY_BUILD_STATUS := $( shell ANDROID_HOME="$(MY_TOPDIR)/$(HISTORICAL_SDK_VERSIONS_ROOT)" JAVA_HOME="$(MY_TOPDIR)/$(ANDROID_JAVA8_HOME)" ./gradlew assembleWebsiteDebug 1>&2 2> /dev/null; echo $$?)
+MY_BUILD_STATUS := $( shell _JAVA_OPTIONS=$(MY_JAVA_OPTIONS) ANDROID_HOME="$(MY_TOPDIR)/$(HISTORICAL_SDK_VERSIONS_ROOT)" JAVA_HOME="$(MY_TOPDIR)/$(ANDROID_JAVA8_HOME)" ./gradlew assembleWebsiteDebug 1>&2 2> /dev/null; echo $$?)
 ifeq ($(MY_BUILD_STATUS),0)
 $(error Signal failed to build)
 endif
