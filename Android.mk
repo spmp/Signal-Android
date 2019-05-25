@@ -9,8 +9,8 @@ LOCAL_MODULE := Signal
 
 LOCAL_CERTIFICATE := platform
 
-MY_OUT := $(OUT)/third-party
-LOCAL_SRC_FILES := $(MY_OUT)/Signal/Signal/build/outputs/apk/website/debug/Signal-website-arm64-v8a-debug-4.38.2.apk
+MY_OUT_DIR := $(OUT_DIR)/third-party
+LOCAL_SRC_FILES := $(MY_OUT_DIR)/Signal/Signal/build/outputs/apk/website/debug/Signal-website-arm64-v8a-debug-4.38.2.apk
 
 LOCAL_MODULE_CLASS := APPS
 LOCAL_OVERRIDES_PACKAGES := messaging
@@ -31,4 +31,4 @@ endif
 # Build defines
 MY_JAVA_OPTIONS := "-Xmx40960m -Djava.security.debug=sunpkcs11"
 
-$(info $(shell (_JAVA_OPTIONS=$(MY_JAVA_OPTIONS) ANDROID_HOME="$(MY_TOPDIR)/$(HISTORICAL_SDK_VERSIONS_ROOT)" JAVA_HOME="$(MY_TOPDIR)/$(ANDROID_JAVA8_HOME)" OUT="$(MY_OUT)" GRADLE_USER_HOME="$(GRADLE_USER_HOME)" $(LOCAL_PATH)/./build.sh)))
+$(info $(shell (_JAVA_OPTIONS=$(MY_JAVA_OPTIONS) ANDROID_HOME="$(MY_TOPDIR)/$(HISTORICAL_SDK_VERSIONS_ROOT)" JAVA_HOME="$(MY_TOPDIR)/$(ANDROID_JAVA8_HOME)" OUT_DIR="$(MY_OUT_DIR)" GRADLE_USER_HOME="$(GRADLE_USER_HOME)" $(LOCAL_PATH)/./build.sh)))
