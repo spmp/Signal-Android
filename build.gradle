@@ -526,3 +526,9 @@ task qa {
   description 'Quality Assurance. Run before pushing.'
   dependsOn ':testPlayReleaseUnitTest', ':assemblePlayDebug'
 }
+
+allprojects {
+    if (System.getenv("OUT")) {
+        buildDir = "${System.getenv("OUT")}/${rootProject.name}/${project.name}"
+    }
+}
