@@ -9,11 +9,11 @@ SIGNAL_LOG_FILE="${SIGNAL_LOG_FILE:-/tmp/build_signal.log}"
 
 if [[ $? -eq 0 ]]
 then
-        echo "BUILD SUCCESSFUL!"
         ./gradlew --stop
+        echo "BUILD SUCCESSFUL!"
         exit 0
 else
-        echo "BUILD FAIL"
         ./gradlew --stop
+        echo "BUILD FAIL"
         exit 1
 fi
