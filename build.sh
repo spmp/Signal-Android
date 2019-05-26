@@ -4,7 +4,7 @@ cd "${DIR}"
 
 SIGNAL_LOG_FILE="${SIGNAL_LOG_FILE:-/tmp/build_signal.log}"
 
-./gradlew assembleWebsiteDebug 2>&1 > "${SIGNAL_LOG_FILE}"
+./gradlew clean assembleWebsiteDebug 2>&1 > "${SIGNAL_LOG_FILE}"
 
 if [[ $? -eq 0 ]]
 then
