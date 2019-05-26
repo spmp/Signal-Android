@@ -4,13 +4,16 @@ cd "${DIR}"
 
 SIGNAL_LOG_FILE="${SIGNAL_LOG_FILE:-/tmp/build_signal.log}"
 
-./gradlew clean assembleWebsiteDebug 2>&1 > "${SIGNAL_LOG_FILE}"
+./gradlew --stop
+./gradlew --no-daemon clean assembleWebsiteDebug &> "${SIGNAL_LOG_FILE}"
 
 if [[ $? -eq 0 ]]
 then
         echo "BUILD SUCCESSFUL!"
+        ./gradlew --stop
         exit 0
 else
-        echo "FAIL"
+        echo "BUILD FAIL"
+        ./gradlew --stop
         exit 1
 fi
