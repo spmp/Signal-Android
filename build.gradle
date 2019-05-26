@@ -527,8 +527,3 @@ task qa {
   dependsOn ':testPlayReleaseUnitTest', ':assemblePlayDebug'
 }
 
-allprojects {
-    if (System.getenv("OUT_DIR")) {
-        buildDir = "${System.getenv("OUT_DIR")}/${rootProject.name}/${project.name}"
-    }
-}
