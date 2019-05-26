@@ -196,6 +196,15 @@ public class IncomingMessageObserver implements InjectableType, ConstraintObserv
     public int onStartCommand(Intent intent, int flags, int startId) {
       super.onStartCommand(intent, flags, startId);
 
+     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NotificationChannels.OTHER);
+     builder.setContentTitle(getApplicationContext().getString(R.string.MessageRetrievalService_signal));
+     builder.setContentText(getApplicationContext().getString(R.string.MessageRetrievalService_background_connection_enabled));
+     builder.setPriority(NotificationCompat.PRIORITY_MIN);
+     builder.setWhen(0);
+     builder.setSmallIcon(R.drawable.ic_signal_background_connection);
+     startForeground(FOREGROUND_ID, builder.build());
+     
+// BP Failed edit...
 //      NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NotificationChannels.OTHER);
 //      builder.setContentTitle(getApplicationContext().getString(R.string.MessageRetrievalService_signal));
 //      builder.setContentText(getApplicationContext().getString(R.string.MessageRetrievalService_background_connection_enabled));
