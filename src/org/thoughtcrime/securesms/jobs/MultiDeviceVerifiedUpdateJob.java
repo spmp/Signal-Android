@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.jobmanager.Data;
 import org.thoughtcrime.securesms.jobmanager.Job;
@@ -125,7 +125,7 @@ public class MultiDeviceVerifiedUpdateJob extends BaseJob implements InjectableT
   }
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     return exception instanceof PushNetworkException;
   }
 

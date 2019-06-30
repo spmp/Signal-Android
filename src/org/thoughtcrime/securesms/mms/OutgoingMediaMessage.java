@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.mms;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.thoughtcrime.securesms.attachments.Attachment;
@@ -58,7 +58,8 @@ public class OutgoingMediaMessage {
   public OutgoingMediaMessage(Recipient recipient, SlideDeck slideDeck, String message,
                               long sentTimeMillis, int subscriptionId, long expiresIn,
                               int distributionType, @Nullable QuoteModel outgoingQuote,
-                              @NonNull List<Contact> contacts, @NonNull List<LinkPreview> linkPreviews)
+                              @NonNull List<Contact> contacts,
+                              @NonNull List<LinkPreview> linkPreviews)
   {
     this(recipient,
          buildMessage(slideDeck, message),

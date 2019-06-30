@@ -1,11 +1,10 @@
 package org.thoughtcrime.securesms.conversation;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.contacts.ContactAccessor;
 import org.thoughtcrime.securesms.database.CursorList;
@@ -15,6 +14,7 @@ import org.thoughtcrime.securesms.search.model.MessageResult;
 import org.thoughtcrime.securesms.util.CloseableLiveData;
 import org.thoughtcrime.securesms.util.Debouncer;
 import org.thoughtcrime.securesms.util.Util;
+import org.thoughtcrime.securesms.util.concurrent.SignalExecutors;
 
 import java.io.Closeable;
 import java.util.List;
@@ -40,7 +40,7 @@ public class ConversationSearchViewModel extends AndroidViewModel {
                                             DatabaseFactory.getContactsDatabase(context),
                                             DatabaseFactory.getThreadDatabase(context),
                                             ContactAccessor.getInstance(),
-                                            AsyncTask.THREAD_POOL_EXECUTOR);
+                                            SignalExecutors.SERIAL);
   }
 
   LiveData<SearchResult> getSearchResults() {

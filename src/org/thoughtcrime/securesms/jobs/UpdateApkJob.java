@@ -8,8 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.thoughtcrime.securesms.jobmanager.Data;
 import org.thoughtcrime.securesms.jobmanager.Job;
@@ -97,7 +97,7 @@ public class UpdateApkJob extends BaseJob {
   }
 
   @Override
-  public boolean onShouldRetry(Exception e) {
+  public boolean onShouldRetry(@NonNull Exception e) {
     return e instanceof  IOException;
   }
 
@@ -229,7 +229,7 @@ public class UpdateApkJob extends BaseJob {
       return url;
     }
 
-    public String toString() {
+    public @NonNull String toString() {
       return "["  + versionCode + ", " + versionName + ", " + url + "]";
     }
 

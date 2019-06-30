@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.jobmanager.Data;
 import org.thoughtcrime.securesms.jobmanager.Job;
@@ -36,7 +36,7 @@ public class PushContentReceiveJob extends PushReceivedJob {
   public void onCanceled() { }
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     return false;
   }
 

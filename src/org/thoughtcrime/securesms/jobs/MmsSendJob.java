@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.thoughtcrime.securesms.jobmanager.Data;
@@ -121,7 +121,7 @@ public class MmsSendJob extends SendJob {
   }
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     return false;
   }
 

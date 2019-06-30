@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.jobs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.crypto.UnidentifiedAccessUtil;
 import org.thoughtcrime.securesms.database.Address;
@@ -85,7 +85,7 @@ public class RequestGroupInfoJob extends BaseJob implements InjectableType {
   }
 
   @Override
-  public boolean onShouldRetry(Exception e) {
+  public boolean onShouldRetry(@NonNull Exception e) {
     return e instanceof PushNetworkException;
   }
 

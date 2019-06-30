@@ -4,10 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.net.Uri;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 import org.thoughtcrime.securesms.crypto.AttachmentSecret;
 import org.thoughtcrime.securesms.crypto.AttachmentSecretProvider;
@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Executor;
 
 /**
  * Allows for the creation and retrieval of blobs.
@@ -180,7 +179,7 @@ public class BlobProvider {
     File             outputFile       = new File(getOrCreateCacheDirectory(context, directory), buildFileName(blobSpec.id));
     OutputStream     outputStream     = ModernEncryptingPartOutputStream.createFor(attachmentSecret, outputFile, true).second;
 
-    SignalExecutors.IO.execute(() -> {
+    SignalExecutors.UNBOUNDED.execute(() -> {
       try {
         Util.copy(blobSpec.getData(), outputStream);
       } catch (IOException e) {

@@ -1,8 +1,8 @@
 package org.thoughtcrime.securesms.jobs;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.jobmanager.Data;
@@ -75,7 +75,7 @@ public class DirectoryRefreshJob extends BaseJob {
   }
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     if (exception instanceof PushNetworkException) return true;
     return false;
   }

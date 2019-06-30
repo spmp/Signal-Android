@@ -2,7 +2,7 @@ package org.thoughtcrime.securesms.imageeditor;
 
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.imageeditor.model.EditorElement;
 
@@ -31,7 +31,7 @@ final class ElementDragEditSession extends ElementEditSession {
   }
 
   @Override
-  public EditSession newPoint(@NonNull Matrix newInverse, PointF point, int p) {
+  public EditSession newPoint(@NonNull Matrix newInverse, @NonNull PointF point, int p) {
     return ElementScaleEditSession.startScale(this, newInverse, point, p);
   }
 

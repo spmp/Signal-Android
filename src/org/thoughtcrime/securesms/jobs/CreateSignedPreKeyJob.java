@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.crypto.IdentityKeyUtil;
 import org.thoughtcrime.securesms.crypto.PreKeyUtil;
@@ -74,7 +74,7 @@ public class CreateSignedPreKeyJob extends BaseJob implements InjectableType {
   public void onCanceled() {}
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     if (exception instanceof PushNetworkException) return true;
     return false;
   }

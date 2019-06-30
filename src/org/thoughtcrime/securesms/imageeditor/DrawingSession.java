@@ -2,7 +2,7 @@ package org.thoughtcrime.securesms.imageeditor;
 
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.imageeditor.model.EditorElement;
 import org.thoughtcrime.securesms.imageeditor.renderers.BezierDrawingRenderer;
@@ -34,12 +34,12 @@ class DrawingSession extends ElementEditSession {
   }
 
   @Override
-  public EditSession newPoint(Matrix newInverse, PointF point, int p) {
+  public EditSession newPoint(@NonNull Matrix newInverse, @NonNull PointF point, int p) {
     return this;
   }
 
   @Override
-  public EditSession removePoint(Matrix newInverse, int p) {
+  public EditSession removePoint(@NonNull Matrix newInverse, int p) {
     return this;
   }
 }

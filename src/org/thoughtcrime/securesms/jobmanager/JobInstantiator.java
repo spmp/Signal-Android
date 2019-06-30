@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.jobmanager;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +13,7 @@ class JobInstantiator {
     this.jobFactories = new HashMap<>(jobFactories);
   }
 
-  public @NonNull
-  Job instantiate(@NonNull String jobFactoryKey, @NonNull Job.Parameters parameters, @NonNull Data data) {
+  public @NonNull Job instantiate(@NonNull String jobFactoryKey, @NonNull Job.Parameters parameters, @NonNull Data data) {
     if (jobFactories.containsKey(jobFactoryKey)) {
       return jobFactories.get(jobFactoryKey).create(parameters, data);
     } else {

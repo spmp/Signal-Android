@@ -2,7 +2,7 @@ package org.thoughtcrime.securesms.mediasend;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.Surface;
 
 import org.thoughtcrime.securesms.logging.Log;
@@ -243,7 +243,7 @@ class Camera1Controller {
     }
 
     @Override
-    public String toString() {
+    public @NonNull String toString() {
       return "cameraCount: " + cameraCount + "  previewWidth: " + previewWidth + "  previewHeight: " + previewHeight;
     }
   }

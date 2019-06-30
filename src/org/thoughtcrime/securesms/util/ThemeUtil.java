@@ -3,13 +3,12 @@ package org.thoughtcrime.securesms.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
-import android.support.v7.view.ContextThemeWrapper;
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import org.thoughtcrime.securesms.R;
 
@@ -38,9 +37,12 @@ public class ThemeUtil {
     TypedValue outValue = new TypedValue();
 
     if (context.getTheme().resolveAttribute(attribute, outValue, true)) {
-      return outValue.coerceToString().toString();
-    } else {
-      return defaultValue;
+      CharSequence charSequence = outValue.coerceToString();
+      if (charSequence != null) {
+        return charSequence.toString();
+      }
     }
+
+    return defaultValue;
   }
 }

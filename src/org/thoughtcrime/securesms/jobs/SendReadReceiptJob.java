@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.crypto.UnidentifiedAccessUtil;
 import org.thoughtcrime.securesms.database.Address;
@@ -95,7 +95,7 @@ public class SendReadReceiptJob extends BaseJob implements InjectableType {
   }
 
   @Override
-  public boolean onShouldRetry(Exception e) {
+  public boolean onShouldRetry(@NonNull Exception e) {
     if (e instanceof PushNetworkException) return true;
     return false;
   }

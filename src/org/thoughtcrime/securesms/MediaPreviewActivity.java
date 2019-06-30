@@ -19,7 +19,7 @@ package org.thoughtcrime.securesms;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,16 +28,16 @@ import android.os.AsyncTask;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.util.Pair;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.core.util.Pair;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -441,12 +441,12 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
   }
 
   @Override
-  public Loader<Pair<Cursor, Integer>> onCreateLoader(int id, Bundle args) {
+  public @NonNull Loader<Pair<Cursor, Integer>> onCreateLoader(int id, Bundle args) {
     return new PagingMediaLoader(this, conversationRecipient, initialMediaUri, leftIsRecent);
   }
 
   @Override
-  public void onLoadFinished(Loader<Pair<Cursor, Integer>> loader, @Nullable Pair<Cursor, Integer> data) {
+  public void onLoadFinished(@NonNull Loader<Pair<Cursor, Integer>> loader, @Nullable Pair<Cursor, Integer> data) {
     if (data != null) {
       @SuppressWarnings("ConstantConditions")
       CursorPagerAdapter adapter = new CursorPagerAdapter(this, GlideApp.with(this), getWindow(), data.first, data.second, leftIsRecent);
@@ -465,7 +465,7 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
   }
 
   @Override
-  public void onLoaderReset(Loader<Pair<Cursor, Integer>> loader) {
+  public void onLoaderReset(@NonNull Loader<Pair<Cursor, Integer>> loader) {
 
   }
 

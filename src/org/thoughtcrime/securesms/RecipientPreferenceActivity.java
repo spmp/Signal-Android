@@ -13,19 +13,19 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.CheckBoxPreference;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.appcompat.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 
 import org.thoughtcrime.securesms.components.SwitchPreferenceCompat;
@@ -231,12 +231,12 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
   }
 
   @Override
-  public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+  public @NonNull Loader<Cursor> onCreateLoader(int id, Bundle args) {
     return new ThreadMediaLoader(this, address, true);
   }
 
   @Override
-  public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+  public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
     if (data != null && data.getCount() > 0) {
       this.threadPhotoRailLabel.setVisibility(View.VISIBLE);
       this.threadPhotoRailView.setVisibility(View.VISIBLE);
@@ -253,7 +253,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
   }
 
   @Override
-  public void onLoaderReset(Loader<Cursor> loader) {
+  public void onLoaderReset(@NonNull Loader<Cursor> loader) {
     this.threadPhotoRailView.setCursor(glideRequests, null);
   }
 

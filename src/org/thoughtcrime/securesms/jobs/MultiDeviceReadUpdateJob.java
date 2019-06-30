@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.jobs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.annimon.stream.Stream;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -98,7 +98,7 @@ public class MultiDeviceReadUpdateJob extends BaseJob implements InjectableType 
   }
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     return exception instanceof PushNetworkException;
   }
 

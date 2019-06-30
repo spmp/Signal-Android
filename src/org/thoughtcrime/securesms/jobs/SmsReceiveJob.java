@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.telephony.SmsMessage;
 
 import org.thoughtcrime.securesms.jobmanager.Data;
@@ -94,7 +94,7 @@ public class SmsReceiveJob extends BaseJob {
   }
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     return exception instanceof MigrationPendingException;
   }
 

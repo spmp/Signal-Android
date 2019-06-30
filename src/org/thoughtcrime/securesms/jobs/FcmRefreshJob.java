@@ -21,8 +21,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -119,7 +119,7 @@ public class FcmRefreshJob extends BaseJob implements InjectableType {
   }
 
   @Override
-  public boolean onShouldRetry(Exception throwable) {
+  public boolean onShouldRetry(@NonNull Exception throwable) {
     if (throwable instanceof NonSuccessfulResponseCodeException) return false;
     return true;
   }

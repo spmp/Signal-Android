@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.crypto.UnidentifiedAccessUtil;
 import org.thoughtcrime.securesms.dependencies.InjectableType;
@@ -99,7 +99,7 @@ public class MultiDeviceConfigurationUpdateJob extends BaseJob implements Inject
   }
 
   @Override
-  public boolean onShouldRetry(Exception e) {
+  public boolean onShouldRetry(@NonNull Exception e) {
     return e instanceof PushNetworkException;
   }
 

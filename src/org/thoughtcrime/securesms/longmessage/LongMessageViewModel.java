@@ -1,14 +1,15 @@
 package org.thoughtcrime.securesms.longmessage;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.database.ContentObserver;
+import android.net.Uri;
 import android.os.Handler;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.database.DatabaseContentProviders;
 import org.whispersystems.libsignal.util.guava.Optional;
@@ -30,15 +31,18 @@ class LongMessageViewModel extends ViewModel {
     this.isMms           = isMms;
     this.message         = new MutableLiveData<>();
     this.messageObserver = new MessageObserver(new Handler());
+
+    repository.getMessage(application, messageId, isMms, longMessage -> {
+      if (longMessage.isPresent()) {
+        Uri uri = DatabaseContentProviders.Conversation.getUriForThread(longMessage.get().getMessageRecord().getThreadId());
+        application.getContentResolver().registerContentObserver(uri, true, messageObserver);
+      }
+
+      message.postValue(longMessage);
+    });
   }
 
   LiveData<Optional<LongMessage>> getMessage() {
-    repository.getMessage(application, messageId, isMms, longMessage -> {
-      if (longMessage.isPresent()) {
-        application.getContentResolver().registerContentObserver(DatabaseContentProviders.Conversation.getUriForThread(longMessage.get().getMessageRecord().getThreadId()), true, messageObserver);
-      }
-      message.postValue(longMessage);
-    });
     return message;
   }
 
@@ -54,7 +58,7 @@ class LongMessageViewModel extends ViewModel {
 
     @Override
     public void onChange(boolean selfChange) {
-      getMessage();
+      repository.getMessage(application, messageId, isMms, message::postValue);
     }
   }
 

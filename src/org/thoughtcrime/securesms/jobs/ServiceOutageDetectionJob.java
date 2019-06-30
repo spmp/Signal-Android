@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.jobs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.greenrobot.eventbus.EventBus;
 import org.thoughtcrime.securesms.BuildConfig;
@@ -81,7 +81,7 @@ public class ServiceOutageDetectionJob extends BaseJob {
   }
 
   @Override
-  public boolean onShouldRetry(Exception e) {
+  public boolean onShouldRetry(@NonNull Exception e) {
     return e instanceof RetryLaterException;
   }
 

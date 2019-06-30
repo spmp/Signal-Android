@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.GroupDatabase;
@@ -111,7 +111,7 @@ public class AvatarDownloadJob extends BaseJob implements InjectableType {
   public void onCanceled() {}
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     if (exception instanceof IOException) return true;
     return false;
   }

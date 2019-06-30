@@ -21,8 +21,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
@@ -301,7 +301,7 @@ public abstract class LegacyMmsConnection {
     }
 
     @Override
-    public String toString() {
+    public @NonNull String toString() {
       return Apn.class.getSimpleName() +
           "{ mmsc: \"" + mmsc + "\"" +
           ", proxy: " + (proxy == null ? "none" : '"' + proxy + '"') +

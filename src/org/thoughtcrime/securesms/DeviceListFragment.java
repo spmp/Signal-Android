@@ -5,10 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.appcompat.app.AlertDialog;
 
 import org.thoughtcrime.securesms.devicelist.Device;
 import org.thoughtcrime.securesms.jobs.RefreshUnidentifiedDeliveryAbilityJob;
@@ -89,7 +90,7 @@ public class DeviceListFragment extends ListFragment
   }
 
   @Override
-  public Loader<List<Device>> onCreateLoader(int id, Bundle args) {
+  public @NonNull Loader<List<Device>> onCreateLoader(int id, Bundle args) {
     empty.setVisibility(View.GONE);
     progressContainer.setVisibility(View.VISIBLE);
 
@@ -97,7 +98,7 @@ public class DeviceListFragment extends ListFragment
   }
 
   @Override
-  public void onLoadFinished(Loader<List<Device>> loader, List<Device> data) {
+  public void onLoadFinished(@NonNull Loader<List<Device>> loader, List<Device> data) {
     progressContainer.setVisibility(View.GONE);
 
     if (data == null) {
@@ -116,7 +117,7 @@ public class DeviceListFragment extends ListFragment
   }
 
   @Override
-  public void onLoaderReset(Loader<List<Device>> loader) {
+  public void onLoaderReset(@NonNull Loader<List<Device>> loader) {
     setListAdapter(null);
   }
 
@@ -210,7 +211,7 @@ public class DeviceListFragment extends ListFragment
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public @NonNull View getView(int position, View convertView, @NonNull ViewGroup parent) {
       if (convertView == null) {
         convertView = ((Activity)getContext()).getLayoutInflater().inflate(resource, parent, false);
       }

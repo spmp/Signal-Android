@@ -1,13 +1,15 @@
 package org.thoughtcrime.securesms.linkpreview;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
 
 import com.annimon.stream.Stream;
+
+import org.thoughtcrime.securesms.stickers.StickerUrl;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +23,7 @@ public final class LinkPreviewUtil {
   private static final Pattern DOMAIN_PATTERN        = Pattern.compile("^(https?://)?([^/]+).*$");
   private static final Pattern ALL_ASCII_PATTERN     = Pattern.compile("^[\\x00-\\x7F]*$");
   private static final Pattern ALL_NON_ASCII_PATTERN = Pattern.compile("^[^\\x00-\\x7F]*$");
+  private static final Pattern STICKER_URL_PATTERN   = Pattern.compile("^.*#pack_id=(.*)&pack_key=(.*)$");
 
   /**
    * @return All whitelisted URLs in the source text.
@@ -43,7 +46,8 @@ public final class LinkPreviewUtil {
    * @return True if the host is present in the link whitelist.
    */
   public static boolean isWhitelistedLinkUrl(@Nullable String linkUrl) {
-    if (linkUrl == null) return false;
+    if (linkUrl == null)                      return false;
+    if (StickerUrl.isValidShareLink(linkUrl)) return true;
 
     HttpUrl url = HttpUrl.parse(linkUrl);
     return url != null                                   &&

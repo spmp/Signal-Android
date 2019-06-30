@@ -1,9 +1,9 @@
 package org.thoughtcrime.securesms.jobs;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
@@ -212,7 +212,7 @@ public class PushGroupSendJob extends PushSendJob implements InjectableType {
   }
 
   @Override
-  public boolean onShouldRetry(Exception exception) {
+  public boolean onShouldRetry(@NonNull Exception exception) {
     if (exception instanceof IOException)         return true;
     if (exception instanceof RetryLaterException) return true;
     return false;
@@ -227,13 +227,16 @@ public class PushGroupSendJob extends PushSendJob implements InjectableType {
       throws IOException, UntrustedIdentityException, UndeliverableMessageException {
     rotateSenderCertificateIfNecessary();
 
-    String                        groupId            = message.getRecipient().getAddress().toGroupString();
-    Optional<byte[]>              profileKey         = getProfileKey(message.getRecipient());
-    Optional<Quote>               quote              = getQuoteFor(message);
-    List<SharedContact>           sharedContacts     = getSharedContactsFor(message);
-    List<Preview>                 previews           = getPreviewsFor(message);
-    List<SignalServiceAddress>    addresses          = Stream.of(destinations).map(this::getPushAddress).toList();
-    List<SignalServiceAttachment> attachmentPointers = getAttachmentPointersFor(message.getAttachments());
+    String                                     groupId            = message.getRecipient().getAddress().toGroupString();
+    Optional<byte[]>                           profileKey         = getProfileKey(message.getRecipient());
+    Optional<Quote>                            quote              = getQuoteFor(message);
+    Optional<SignalServiceDataMessage.Sticker> sticker            = getStickerFor(message);
+    List<SharedContact>                        sharedContacts     = getSharedContactsFor(message);
+    List<Preview>                              previews           = getPreviewsFor(message);
+    List<SignalServiceAddress>                 addresses          = Stream.of(destinations).map(this::getPushAddress).toList();
+    List<Attachment>                           attachments        = Stream.of(message.getAttachments()).filterNot(Attachment::isSticker).toList();
+    List<SignalServiceAttachment>              attachmentPointers = getAttachmentPointersFor(attachments);
+    boolean                                    isRecipientUpdate  = destinations.size() != DatabaseFactory.getGroupReceiptDatabase(context).getGroupReceiptInfo(messageId).size();
 
     List<Optional<UnidentifiedAccessPair>> unidentifiedAccess = Stream.of(addresses)
                                                                       .map(address -> Address.fromSerialized(address.getNumber()))
@@ -253,7 +256,7 @@ public class PushGroupSendJob extends PushSendJob implements InjectableType {
                                                                            .asGroupMessage(group)
                                                                            .build();
 
-      return messageSender.sendMessage(addresses, unidentifiedAccess, groupDataMessage);
+      return messageSender.sendMessage(addresses, unidentifiedAccess, isRecipientUpdate, groupDataMessage);
     } else {
       SignalServiceGroup       group        = new SignalServiceGroup(GroupUtil.getDecodedId(groupId));
       SignalServiceDataMessage groupMessage = SignalServiceDataMessage.newBuilder()
@@ -265,11 +268,12 @@ public class PushGroupSendJob extends PushSendJob implements InjectableType {
                                                                       .asExpirationUpdate(message.isExpirationUpdate())
                                                                       .withProfileKey(profileKey.orNull())
                                                                       .withQuote(quote.orNull())
+                                                                      .withSticker(sticker.orNull())
                                                                       .withSharedContacts(sharedContacts)
                                                                       .withPreviews(previews)
                                                                       .build();
 
-      return messageSender.sendMessage(addresses, unidentifiedAccess, groupMessage);
+      return messageSender.sendMessage(addresses, unidentifiedAccess, isRecipientUpdate, groupMessage);
     }
   }
 

@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.jobs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.crypto.ProfileKeyUtil;
 import org.thoughtcrime.securesms.dependencies.InjectableType;
@@ -68,7 +68,7 @@ public class RefreshUnidentifiedDeliveryAbilityJob extends BaseJob implements In
   }
 
   @Override
-  protected boolean onShouldRetry(Exception exception) {
+  protected boolean onShouldRetry(@NonNull Exception exception) {
     return exception instanceof PushNetworkException;
   }
 

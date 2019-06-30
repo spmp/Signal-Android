@@ -26,34 +26,21 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.OnScrollListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
-
-import org.thoughtcrime.securesms.ApplicationContext;
-import org.thoughtcrime.securesms.MessageDetailsActivity;
-import org.thoughtcrime.securesms.PassphraseRequiredActionBarActivity;
-import org.thoughtcrime.securesms.R;
-import org.thoughtcrime.securesms.ShareActivity;
-import org.thoughtcrime.securesms.attachments.Attachment;
-import org.thoughtcrime.securesms.components.ConversationTypingView;
-import org.thoughtcrime.securesms.components.recyclerview.SmoothScrollingLinearLayoutManager;
-import org.thoughtcrime.securesms.database.Address;
-import org.thoughtcrime.securesms.linkpreview.LinkPreview;
-import org.thoughtcrime.securesms.logging.Log;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,11 +56,20 @@ import android.widget.ViewSwitcher;
 
 import com.annimon.stream.Stream;
 
-import org.thoughtcrime.securesms.conversation.ConversationAdapter.HeaderViewHolder;
-import org.thoughtcrime.securesms.conversation.ConversationAdapter.ItemClickListener;
+import org.thoughtcrime.securesms.ApplicationContext;
+import org.thoughtcrime.securesms.MessageDetailsActivity;
+import org.thoughtcrime.securesms.PassphraseRequiredActionBarActivity;
+import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.ShareActivity;
+import org.thoughtcrime.securesms.attachments.Attachment;
+import org.thoughtcrime.securesms.components.ConversationTypingView;
+import org.thoughtcrime.securesms.components.recyclerview.SmoothScrollingLinearLayoutManager;
+import org.thoughtcrime.securesms.contactshare.Contact;
 import org.thoughtcrime.securesms.contactshare.ContactUtil;
 import org.thoughtcrime.securesms.contactshare.SharedContactDetailsActivity;
-import org.thoughtcrime.securesms.contactshare.Contact;
+import org.thoughtcrime.securesms.conversation.ConversationAdapter.HeaderViewHolder;
+import org.thoughtcrime.securesms.conversation.ConversationAdapter.ItemClickListener;
+import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MmsSmsDatabase;
 import org.thoughtcrime.securesms.database.RecipientDatabase;
@@ -82,6 +78,8 @@ import org.thoughtcrime.securesms.database.model.MediaMmsMessageRecord;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord;
 import org.thoughtcrime.securesms.jobs.DirectoryRefreshJob;
+import org.thoughtcrime.securesms.linkpreview.LinkPreview;
+import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.longmessage.LongMessageActivity;
 import org.thoughtcrime.securesms.mediasend.Media;
 import org.thoughtcrime.securesms.mms.GlideApp;
@@ -92,6 +90,8 @@ import org.thoughtcrime.securesms.profiles.UnknownSenderView;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.sms.MessageSender;
 import org.thoughtcrime.securesms.sms.OutgoingTextMessage;
+import org.thoughtcrime.securesms.stickers.StickerLocator;
+import org.thoughtcrime.securesms.stickers.StickerPackPreviewActivity;
 import org.thoughtcrime.securesms.util.CommunicationActions;
 import org.thoughtcrime.securesms.util.SaveAttachmentTask;
 import org.thoughtcrime.securesms.util.StickyHeaderDecoration;
@@ -306,19 +306,19 @@ public class ConversationFragment extends Fragment
       }
 
       if (recipients.size() > 0) {
-        if (adapter.getHeaderView() == null && isAtBottom()) {
+        if (!isTypingIndicatorShowing() && isAtBottom()) {
           list.setVerticalScrollBarEnabled(false);
           list.post(() -> getListLayoutManager().smoothScrollToPosition(requireContext(), 0, 250));
           list.postDelayed(() -> list.setVerticalScrollBarEnabled(true), 300);
           adapter.setHeaderView(typingView);
           adapter.notifyItemInserted(0);
         } else {
-          if (adapter.getHeaderView() == null) {
-            adapter.setHeaderView(typingView);
-            adapter.notifyItemInserted(0);
-          } else  {
+          if (isTypingIndicatorShowing()) {
             adapter.setHeaderView(typingView);
             adapter.notifyItemChanged(0);
+          } else {
+            adapter.setHeaderView(typingView);
+            adapter.notifyItemInserted(0);
           }
         }
       } else {
@@ -379,10 +379,11 @@ public class ConversationFragment extends Fragment
       MessageRecord messageRecord = messageRecords.iterator().next();
 
       menu.findItem(R.id.menu_context_resend).setVisible(messageRecord.isFailed());
-      menu.findItem(R.id.menu_context_save_attachment).setVisible(!actionMessage                     &&
-                                                                  messageRecord.isMms()              &&
-                                                                  !messageRecord.isMmsNotification() &&
-                                                                  ((MediaMmsMessageRecord)messageRecord).containsMediaSlide());
+      menu.findItem(R.id.menu_context_save_attachment).setVisible(!actionMessage                                              &&
+                                                                  messageRecord.isMms()                                       &&
+                                                                  !messageRecord.isMmsNotification()                          &&
+                                                                  ((MediaMmsMessageRecord)messageRecord).containsMediaSlide() &&
+                                                                  ((MediaMmsMessageRecord)messageRecord).getSlideDeck().getStickerSlide() == null);
 
       menu.findItem(R.id.menu_context_forward).setVisible(!actionMessage && !sharedContact);
       menu.findItem(R.id.menu_context_details).setVisible(!actionMessage);
@@ -528,10 +529,11 @@ public class ConversationFragment extends Fragment
 
       if (message.isMms()) {
         MmsMessageRecord mediaMessage = (MmsMessageRecord) message;
-        boolean          isAlbum      = mediaMessage.containsMediaSlide()                   &&
-                                        mediaMessage.getSlideDeck().getSlides().size() > 1  &&
-                                        mediaMessage.getSlideDeck().getAudioSlide() == null &&
-                                        mediaMessage.getSlideDeck().getDocumentSlide() == null;
+        boolean          isAlbum      = mediaMessage.containsMediaSlide()                      &&
+                                        mediaMessage.getSlideDeck().getSlides().size() > 1     &&
+                                        mediaMessage.getSlideDeck().getAudioSlide() == null    &&
+                                        mediaMessage.getSlideDeck().getDocumentSlide() == null &&
+                                        mediaMessage.getSlideDeck().getStickerSlide() == null;
 
         if (isAlbum) {
           ArrayList<Media> mediaList   = new ArrayList<>(mediaMessage.getSlideDeck().getSlides().size());
@@ -562,6 +564,10 @@ public class ConversationFragment extends Fragment
           Slide slide = mediaMessage.getSlideDeck().getSlides().get(0);
           composeIntent.putExtra(Intent.EXTRA_STREAM, slide.getUri());
           composeIntent.setType(slide.getContentType());
+
+          if (slide.hasSticker()) {
+            composeIntent.putExtra(ConversationActivity.STICKER_EXTRA, slide.asAttachment().getSticker());
+          }
         }
 
         if (mediaMessage.getSlideDeck().getTextSlide() != null && mediaMessage.getSlideDeck().getTextSlide().getUri() != null) {
@@ -615,7 +621,7 @@ public class ConversationFragment extends Fragment
   }
 
   @Override
-  public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+  public @NonNull Loader<Cursor> onCreateLoader(int id, Bundle args) {
     Log.i(TAG, "onCreateLoader");
     loaderStartTime = System.currentTimeMillis();
 
@@ -630,7 +636,7 @@ public class ConversationFragment extends Fragment
   }
 
   @Override
-  public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+  public void onLoadFinished(@NonNull Loader<Cursor> cursorLoader, Cursor cursor) {
     long loadTime = System.currentTimeMillis() - loaderStartTime;
     int  count    = cursor.getCount();
     Log.i(TAG, "onLoadFinished - took " + loadTime + " ms to load a cursor of size " + count);
@@ -671,7 +677,7 @@ public class ConversationFragment extends Fragment
 
     int lastSeenPosition = adapter.findLastSeenPosition(lastSeen);
 
-    if (adapter.getHeaderView() == typingView) {
+    if (isTypingIndicatorShowing()) {
       lastSeenPosition = Math.max(lastSeenPosition - 1, 0);
     }
 
@@ -705,7 +711,7 @@ public class ConversationFragment extends Fragment
   }
 
   @Override
-  public void onLoaderReset(Loader<Cursor> arg0) {
+  public void onLoaderReset(@NonNull Loader<Cursor> arg0) {
     if (list.getAdapter() != null) {
       getListAdapter().changeCursor(null);
     }
@@ -759,12 +765,16 @@ public class ConversationFragment extends Fragment
 
     int firstVisiblePosition = getListLayoutManager().findFirstVisibleItemPosition();
 
-    if (getListAdapter().getHeaderView() == typingView) {
+    if (isTypingIndicatorShowing()) {
       RecyclerView.ViewHolder item1 = list.findViewHolderForAdapterPosition(1);
       return firstVisiblePosition <= 1 && item1 != null && item1.itemView.getBottom() <= list.getHeight();
     }
 
     return firstVisiblePosition == 0 && list.getChildAt(0).getBottom() <= list.getHeight();
+  }
+
+  private boolean isTypingIndicatorShowing() {
+    return getListAdapter().getHeaderView() == typingView;
   }
 
   public void onSearchQueryUpdated(@Nullable String query) {
@@ -777,7 +787,7 @@ public class ConversationFragment extends Fragment
     SimpleTask.run(getLifecycle(), () -> {
       return DatabaseFactory.getMmsSmsDatabase(getContext())
                             .getMessagePositionInConversation(threadId, timestamp, author);
-    }, p -> moveToMessagePosition(p, onMessageNotFound));
+    }, p -> moveToMessagePosition(p + (isTypingIndicatorShowing() ? 1 : 0), onMessageNotFound));
   }
 
   private void moveToMessagePosition(int position, @Nullable Runnable onMessageNotFound) {
@@ -828,7 +838,7 @@ public class ConversationFragment extends Fragment
     }
 
     @Override
-    public void onScrolled(final RecyclerView rv, final int dx, final int dy) {
+    public void onScrolled(@NonNull final RecyclerView rv, final int dx, final int dy) {
       boolean currentlyAtBottom           = isAtBottom();
       boolean currentlyAtZoomScrollHeight = isAtZoomScrollHeight();
       int     positionId                  = getHeaderPositionId();
@@ -854,7 +864,7 @@ public class ConversationFragment extends Fragment
     }
 
     @Override
-    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
       if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
         conversationDateHeader.show();
       } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -922,7 +932,7 @@ public class ConversationFragment extends Fragment
                               .getQuotedMessagePosition(threadId,
                                                         messageRecord.getQuote().getId(),
                                                         messageRecord.getQuote().getAuthor());
-      }, p -> moveToMessagePosition(p, () -> {
+      }, p -> moveToMessagePosition(p + (isTypingIndicatorShowing() ? 1 : 0), () -> {
         Toast.makeText(getContext(), R.string.ConversationFragment_quoted_message_no_longer_available, Toast.LENGTH_SHORT).show();
       }));
     }
@@ -938,6 +948,13 @@ public class ConversationFragment extends Fragment
     public void onMoreTextClicked(@NonNull Address conversationAddress, long messageId, boolean isMms) {
       if (getContext() != null && getActivity() != null) {
         startActivity(LongMessageActivity.getIntent(getContext(), conversationAddress, messageId, isMms));
+      }
+    }
+
+    @Override
+    public void onStickerClicked(@NonNull StickerLocator sticker) {
+      if (getContext() != null && getActivity() != null) {
+        startActivity(StickerPackPreviewActivity.getIntent(sticker.getPackId(), sticker.getPackKey()));
       }
     }
 
@@ -980,7 +997,7 @@ public class ConversationFragment extends Fragment
       if (getContext() == null) return;
 
       ContactUtil.selectRecipientThroughDialog(getContext(), choices, locale, recipient -> {
-        CommunicationActions.composeSmsThroughDefaultApp(getContext(), recipient.getAddress(), getString(R.string.InviteActivity_lets_switch_to_signal, "https://sgnl.link/1KpeYmF"));
+        CommunicationActions.composeSmsThroughDefaultApp(getContext(), recipient.getAddress(), getString(R.string.InviteActivity_lets_switch_to_signal, getString(R.string.install_url)));
       });
     }
   }
@@ -1037,6 +1054,8 @@ public class ConversationFragment extends Fragment
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+      if (actionMode == null) return false;
+
       switch(item.getItemId()) {
         case R.id.menu_context_copy:
           handleCopyMessage(getListAdapter().getSelectedItems());

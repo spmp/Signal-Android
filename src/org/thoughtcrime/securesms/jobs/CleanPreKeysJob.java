@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.jobs;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.jobmanager.Data;
 import org.thoughtcrime.securesms.jobmanager.Job;
@@ -97,7 +97,7 @@ public class CleanPreKeysJob extends BaseJob implements InjectableType {
   }
 
   @Override
-  public boolean onShouldRetry(Exception throwable) {
+  public boolean onShouldRetry(@NonNull Exception throwable) {
     if (throwable instanceof NonSuccessfulResponseCodeException) return false;
     if (throwable instanceof PushNetworkException)               return true;
     return false;

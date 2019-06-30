@@ -20,7 +20,7 @@ package org.thoughtcrime.securesms.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -215,6 +215,10 @@ public class SmsDatabase extends MessagingDatabase {
 
   public void markAsNoSession(long id) {
     updateTypeBitmask(id, Types.ENCRYPTION_MASK, Types.ENCRYPTION_REMOTE_NO_SESSION_BIT);
+  }
+
+  public void markAsUnsupportedProtocolVersion(long id) {
+    updateTypeBitmask(id, Types.BASE_TYPE_MASK, Types.UNSUPPORTED_MESSAGE_TYPE);
   }
 
   public void markAsLegacyVersion(long id) {

@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.glide;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -20,7 +20,7 @@ public class PaddedHeadersInterceptor implements Interceptor {
   private static final int    MAX_RANDOM_BYTES = 64;
 
   @Override
-  public Response intercept(@NonNull Chain chain) throws IOException {
+  public @NonNull Response intercept(@NonNull Chain chain) throws IOException {
     Request padded = chain.request().newBuilder()
                                     .headers(getPaddedHeaders(chain.request().headers()))
                                     .build();

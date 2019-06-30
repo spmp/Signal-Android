@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.net;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.annimon.stream.Stream;
@@ -150,7 +150,7 @@ public class ChunkedDataFetcher {
       return;
     }
 
-    SignalExecutors.IO.execute(() -> {
+    SignalExecutors.UNBOUNDED.execute(() -> {
       List<CallRequestController> controllers = Stream.of(requestPattern).map(range -> makeChunkRequest(client, url, range)).toList();
       List<InputStream>           streams     = new ArrayList<>(controllers.size() + (firstChunk.isPresent() ? 1 : 0));
 

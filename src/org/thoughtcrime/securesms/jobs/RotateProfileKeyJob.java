@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.jobs;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.crypto.ProfileKeyUtil;
@@ -69,7 +69,7 @@ public class RotateProfileKeyJob extends BaseJob implements InjectableType {
   }
 
   @Override
-  protected boolean onShouldRetry(Exception exception) {
+  protected boolean onShouldRetry(@NonNull Exception exception) {
     return exception instanceof PushNetworkException;
   }
 
