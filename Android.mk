@@ -9,7 +9,7 @@ LOCAL_MODULE := Signal
 
 LOCAL_CERTIFICATE := platform
 
-LOCAL_SRC_FILES := build/outputs/apk/website/debug/Signal-website-arm64-v8a-debug-4.43.3.apk
+LOCAL_SRC_FILES := build/outputs/apk/website/debug/Signal-website-arm64-v8a-debug-4.43.9.apk
 
 LOCAL_MODULE_CLASS := APPS
 LOCAL_OVERRIDES_PACKAGES := messaging
