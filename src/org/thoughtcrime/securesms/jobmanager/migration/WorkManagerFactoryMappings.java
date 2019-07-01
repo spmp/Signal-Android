@@ -45,7 +45,7 @@ import org.thoughtcrime.securesms.jobs.SmsSendJob;
 import org.thoughtcrime.securesms.jobs.SmsSentJob;
 import org.thoughtcrime.securesms.jobs.TrimThreadJob;
 import org.thoughtcrime.securesms.jobs.TypingSendJob;
-import org.thoughtcrime.securesms.jobs.UpdateApkJob;
+//import org.thoughtcrime.securesms.jobs.UpdateApkJob;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -95,7 +95,7 @@ public class WorkManagerFactoryMappings {
     put(SmsSentJob.class.getName(), SmsSentJob.KEY);
     put(TrimThreadJob.class.getName(), TrimThreadJob.KEY);
     put(TypingSendJob.class.getName(), TypingSendJob.KEY);
-    put(UpdateApkJob.class.getName(), UpdateApkJob.KEY);
+//    put(UpdateApkJob.class.getName(), UpdateApkJob.KEY);
   }};
 
   public static @Nullable String getFactoryKey(@NonNull String workManagerClass) {
