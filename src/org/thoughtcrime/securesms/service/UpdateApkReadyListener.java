@@ -61,20 +61,20 @@ public class UpdateApkReadyListener extends BroadcastReceiver {
     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     intent.setData(uri);
 
-    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
-    Notification notification = new NotificationCompat.Builder(context, NotificationChannels.APP_UPDATES)
-        .setOngoing(true)
-        .setContentTitle(context.getString(R.string.UpdateApkReadyListener_Signal_update))
-        .setContentText(context.getString(R.string.UpdateApkReadyListener_a_new_version_of_signal_is_available_tap_to_update))
-        .setSmallIcon(R.drawable.icon_notification)
-        .setColor(context.getResources().getColor(R.color.textsecure_primary))
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
-        .setCategory(NotificationCompat.CATEGORY_REMINDER)
-        .setContentIntent(pendingIntent)
-        .build();
-
-    ServiceUtil.getNotificationManager(context).notify(666, notification);
+//    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+//
+//    Notification notification = new NotificationCompat.Builder(context, NotificationChannels.APP_UPDATES)
+//        .setOngoing(true)
+//        .setContentTitle(context.getString(R.string.UpdateApkReadyListener_Signal_update))
+//        .setContentText(context.getString(R.string.UpdateApkReadyListener_a_new_version_of_signal_is_available_tap_to_update))
+//        .setSmallIcon(R.drawable.icon_notification)
+//        .setColor(context.getResources().getColor(R.color.textsecure_primary))
+//        .setPriority(NotificationCompat.PRIORITY_HIGH)
+//        .setCategory(NotificationCompat.CATEGORY_REMINDER)
+//        .setContentIntent(pendingIntent)
+//        .build();
+//
+//    ServiceUtil.getNotificationManager(context).notify(666, notification);
   }
 
   private @Nullable Uri getLocalUriForDownloadId(Context context, long downloadId) {

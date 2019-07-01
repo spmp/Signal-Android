@@ -7,7 +7,7 @@ import org.thoughtcrime.securesms.logging.Log;
 
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.BuildConfig;
-import org.thoughtcrime.securesms.jobs.UpdateApkJob;
+//import org.thoughtcrime.securesms.jobs.UpdateApkJob;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 
 import java.util.concurrent.TimeUnit;
@@ -29,9 +29,9 @@ public class UpdateApkRefreshListener extends PersistentAlarmManagerListener {
 
     if (scheduledTime != 0 && BuildConfig.PLAY_STORE_DISABLED) {
       Log.i(TAG, "Queueing APK update job...");
-      ApplicationContext.getInstance(context)
-                        .getJobManager()
-                        .add(new UpdateApkJob());
+//      ApplicationContext.getInstance(context)
+//                        .getJobManager()
+//                        .add(new UpdateApkJob());
     }
 
     long newTime = System.currentTimeMillis() + INTERVAL;

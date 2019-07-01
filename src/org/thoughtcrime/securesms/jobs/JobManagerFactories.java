@@ -69,7 +69,8 @@ public final class JobManagerFactories {
       put(StickerPackDownloadJob.KEY,                new StickerPackDownloadJob.Factory());
       put(TrimThreadJob.KEY,                         new TrimThreadJob.Factory());
       put(TypingSendJob.KEY,                         new TypingSendJob.Factory());
-      //put(UpdateApkJob.KEY,                          new UpdateApkJob.Factory());
+      // JA: Do not disable here, crashes
+//      put(UpdateApkJob.KEY,                          new UpdateApkJob.Factory());
     }};
   }
 
