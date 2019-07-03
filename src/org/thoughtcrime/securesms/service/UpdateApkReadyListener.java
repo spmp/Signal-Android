@@ -63,6 +63,7 @@ public class UpdateApkReadyListener extends BroadcastReceiver {
 
     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
+    /**
     Notification notification = new NotificationCompat.Builder(context, NotificationChannels.APP_UPDATES)
         .setOngoing(true)
         .setContentTitle(context.getString(R.string.UpdateApkReadyListener_Signal_update))
@@ -75,6 +76,7 @@ public class UpdateApkReadyListener extends BroadcastReceiver {
         .build();
 
     ServiceUtil.getNotificationManager(context).notify(666, notification);
+    **/
   }
 
   private @Nullable Uri getLocalUriForDownloadId(Context context, long downloadId) {
